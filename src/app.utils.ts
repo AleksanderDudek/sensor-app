@@ -3,7 +3,7 @@
 //     Fixed = 'fixed',
 // }
 
-enum QualityType {
+export enum QualityType {
   Alarm = 'Alarm',
   Normal = 'Normal',
   Warning = 'Warning',

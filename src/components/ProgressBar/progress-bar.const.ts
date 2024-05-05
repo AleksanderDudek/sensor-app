@@ -1,6 +1,6 @@
-import { ProgressBarSectionData } from './progress-bar.model'
+import { ProgressBarConfig } from './progress-bar.model'
 
-export const defaultSectionData: ProgressBarSectionData[] = [
+export const defaultSectionData: ProgressBarConfig[] = [
   {
     widthMultiplier: 0.1,
     background: '#f16172',

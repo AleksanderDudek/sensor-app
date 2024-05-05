@@ -1,3 +1,24 @@
+# Minimal setup
+To run the app:
+
+prerequisites:
+- make sure you have node installed
+- make sure you have git installed
+- in case you have problems contact the author directly
+
+1. git clone / unzip downloaded project file
+2. go into app's main directory
+3. run npm install / npm i
+4. npm run dev 
+
+You can modify number of sensors / recievers.
+This isn't 100% bulletproof. 
+Please copy/paste object matching existing pattern ex. incrementing IDs, watching correct types.
+
+Other than that you should be able to have it working.
+
+Currently you can switch status of reciever from UI. It isn't persisted in file.
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
