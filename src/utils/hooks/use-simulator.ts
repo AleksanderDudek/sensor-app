@@ -10,24 +10,22 @@ enum QualityType {
 
 export type SimulatorOutput = {
   output: string
+  getIntervalID: () => number | null
   start: (freqeuncy?: number) => void
   stop: () => void
-  getIntervalID: () => number | null
 }
 
 export const useSimulator = (
   data: Partial<SensorConfigData>,
 ): SimulatorOutput => {
   let encoderType: string = ''
-  // in HZ
-  let frequency: number = 0
+  let frequencyHz: number = 0
   let id: number = 0
   let maxValue: number = 0
   let minValue: number = 0
   let sensorTypeName: string = ''
 
-  const intervalID = useRef<null | number>(null)
-  //to powinna byc zmienna stanowa, ktora sie odswieza
+  const intervalID = useRef<number | null>(null)
   const [outputSignal, setOutputSignal] = useState('')
 
   const assessQuality = (sensorValue: number) => {
@@ -52,27 +50,18 @@ export const useSimulator = (
     }
   }
 
-  //$FIX, 3, Speed, 192, Normal*
-  // formatResponse
   const formatCurrentSensorResponse = (sensorVal: number) => {
-    //console.log(`$FIX, ${id}, ${sensorTypeName}, ${sensorVal}, ${assessQuality(sensorVal)}`)
     return `${'$FIX'}, ${id}, ${sensorTypeName}, ${sensorVal}, ${assessQuality(sensorVal)}`
   }
 
-  // generateRandomValue
   const generateRandomValue = (): number => {
-    //    generateRandomValue() wodotrysk
-    // upewnic sie co do przedzialow wartosci
-    // console.log(Math.random(), Math.random() * maxValue, Math.random() * (maxValue) + minValue )
-
     const randomVal = Math.floor(Math.random() * maxValue + minValue)
     return randomVal
   }
 
-  //'constructor'
   const mapSensorConfigDataToSimulator = () => {
     encoderType = data.EncoderType ?? ''
-    frequency = data.Frequency ?? 0
+    frequencyHz = data.Frequency ?? 0
     id = data.ID ?? 0
     maxValue = data.MaxValue ?? 0
     minValue = data.MinValue ?? 0
@@ -80,20 +69,21 @@ export const useSimulator = (
   }
 
   const startSignalGeneration = (inputfrequency?: number) => {
-    const signalFrequency = inputfrequency ?? frequency
+    const signalFrequency = inputfrequency ?? frequencyHz
 
-    console.log('start')
-    if (intervalID.current) return
+    if (intervalID.current) {
+        return
+    }
+
     const id = setInterval(() => {
-      //console.log('test', outputSignal)
       const newValue = generateRandomValue()
       setOutputSignal(formatCurrentSensorResponse(newValue))
-    }, signalFrequency * 1000) //example, add frequency
-    intervalID.current = id
+    }, signalFrequency * 1000)
+
+    intervalID.current = Number(id)
   }
 
   const stopSignalGeneration = () => {
-    console.log('stop')
     if (!intervalID.current) return
 
     clearInterval(intervalID.current)

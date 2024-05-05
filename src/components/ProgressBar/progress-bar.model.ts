@@ -1,10 +1,12 @@
-export type ProgressBarSectionData = {
+export type ProgressBarConfig = {
   background: string
-  width: number
+  widthMultiplier: number
 }
 
 export type ProgressBarProps = {
   value: number
-  sectionsData?: ProgressBarSectionData[]
-  width?: number
+  barWidth?: number
+  minValue: number
+  maxValue: number
+  customBarSettings?: ProgressBarConfig[]
 }

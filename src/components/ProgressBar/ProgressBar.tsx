@@ -3,26 +3,26 @@ import { defaultSectionData } from './progress-bar.const'
 import './progress-bar.css'
 import { ProgressBarProps } from './progress-bar.model'
 
-const ProgressBar = ({ value, sectionsData, width }: ProgressBarProps) => {
-  const data = sectionsData ?? defaultSectionData
+const ProgressBar = ({ customBarSettings = defaultSectionData, value = -50, barWidth = 500, minValue = -100, maxValue = 100 }: ProgressBarProps) => {
+  const normalizedValue = normalizeValue(value, minValue, maxValue)
 
   return (
     <div
       className="progress-container"
-      style={width ? { width: `${width}px` } : {}}
+      style={barWidth ? { width: barWidth } : {}}
     >
       <div className="progress-bar">
-        {data.map(({ background, width }) => (
+        {customBarSettings.map(({ background, widthMultiplier }) => (
           <div
             className="progress-bar-fill"
-            style={{ background, width: `${normalizeValue(width, 0, 100)}%` }}
+            style={{ background, width: widthMultiplier*barWidth }}
           />
         ))}
       </div>
 
       <p
         className="progress-pointer"
-        style={{ left: `${normalizeValue(value, 0, 100)}%` }}
+        style={{ left: normalizedValue*barWidth }}
       >
         ▼
       </p>

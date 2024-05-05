@@ -1,23 +1,25 @@
 import { useEffect, useState } from 'react'
 
 import './App.css'
-import { formatSimulatorToHumanReadable } from './app.utils'
-import data from './assets/sensorConfig.json'
+import { HumanReadableSensorData, formatSimulatorToHumanReadable } from './app.utils'
+import sensorData from '@assets/sensorConfig.json'
+import recieverData from '@assets/receiverConfig.json'
 import { Receiver } from './components'
-import { SensorConfigData, SensorConfigDto } from './dto'
-import { SimulatorOutput, useSimulator } from './utils/hooks'
+import type { RecieverConfigDTO, RecieverConfigData, SensorConfigData, SensorConfigDto, } from './dto'
+import { type SimulatorOutput, useSimulator } from './utils/hooks'
+import { RecieverStatus } from './components/Receiver'
 
 const App = () => {
   const [sensorConfigData, setSensorConfigData] =
-    useState<SensorConfigDto>(data)
+    useState<SensorConfigDto>(sensorData)
+
+  const [recieverConfigData, setRecieverConfigData] =
+    useState<RecieverConfigDTO>(recieverData)
 
   // read from file if there are existing recievers
 
-  // 1 simulator
-
-  const simulator1 = useSimulator(sensorConfigData.Sensors[0])
-  const simulator2 = useSimulator(sensorConfigData.Sensors[1])
-  const simulator3 = useSimulator(sensorConfigData.Sensors[2])
+  const generatedSimulators: SimulatorOutput[] = sensorConfigData.Sensors.map((sensorConfigDataItem: SensorConfigData) => useSimulator(sensorConfigDataItem))
+  const generatedRecievers: RecieverConfigData[] = recieverConfigData.Recievers;
 
   const startStop = (x: SimulatorOutput) => {
     x.getIntervalID() ? x.stop() : x.start()
@@ -25,52 +27,58 @@ const App = () => {
 
   // start simulator
   useEffect(() => {
-    simulator1.start()
-    simulator2.start()
-    simulator3.start()
+    generatedSimulators.map((sensorSimulator: SimulatorOutput) => {
+      sensorSimulator.start()
+    })
 
     return () => {
-      simulator1.stop()
-      simulator2.stop()
-      simulator3.stop()
+      // clean up function
+      generatedSimulators.map((sensorSimulator: SimulatorOutput) => {
+        sensorSimulator.stop()
+      })
     }
   }, [])
 
-  formatSimulatorToHumanReadable()
+  const renderSimulator = (sensorSimulator: SimulatorOutput, sensorConfig: SensorConfigData) => {
+    const structuredSimulatorOutputObject: HumanReadableSensorData = formatSimulatorToHumanReadable(sensorSimulator.output);
 
-  const x = ({ data: [] }) => <div>Dane...</div>
+    return <>
+      <h3>{structuredSimulatorOutputObject.sensorTypeName}</h3>
+      <p>{sensorSimulator.output}</p>
+      {/* <Receiver sensorData={sensorSimulator} sensorConfig={sensorConfig}/> */}
+      <button onClick={() => startStop(sensorSimulator)}> Activate/Deactivate </button>
+    </>
+  }
+
+  const onRecieverStatusUpdate = (recId: number) => {
+    let tempObject: RecieverConfigDTO = {...recieverConfigData}
+    //toggle activity status
+    tempObject.Recievers[recId] = {...tempObject.Recievers[recId], Status: tempObject.Recievers[recId].Status == RecieverStatus.Active ? RecieverStatus.Inactive : RecieverStatus.Active }
+    setRecieverConfigData(tempObject);
+  }
+
+  const renderReciever = (recieverData: RecieverConfigData) => {
+    // we assume for the sake of this task that SimulatorID is also index inside sensorConfig.json array
+
+    return <>
+    {/* render component */}
+    <Receiver onRecieverStatusUpdate={onRecieverStatusUpdate} recieverData={recieverData} sensorData={generatedSimulators[recieverData.SimulatorID-1]} sensorConfig={sensorConfigData.Sensors[recieverData.SimulatorID-1]}/>
+    {/* button to switch active/inactive for current reciever */}
+    </>
+  }
 
   return (
     <>
       <h1> Sensor dashboard</h1>
-      <div>
-        {/* format val */}
-        {simulator1.output}
-        <button onClick={simulator1.stop}> Stop streaming simulator 1 </button>
-      </div>
 
-      <div>
-        <Receiver {...sensorConfigData.Sensors[0]} />
-      </div>
+      {/* just output simulators for sensors */}
+      {generatedSimulators.length > 0 && <h2>Simulators</h2>}
+      {generatedSimulators.map((simulator, index) => renderSimulator(simulator, sensorConfigData.Sensors[index]))}
 
-      <div>
-        {simulator2.output}
-        <button onClick={() => startStop(simulator2)}>
-          {' '}
-          Stop streaming simulator 2{' '}
-        </button>
-      </div>
-      <div>
-        <Receiver {...sensorConfigData.Sensors[1]} />
-      </div>
-      <div>
-        {simulator3.output}
-        <button onClick={simulator3.stop}> Stop streaming simulator 3 </button>
-      </div>
+      {/* just output recievers for sensors */}
+      {generatedRecievers.length > 0 && <h2>Recievers</h2>}
+      {generatedRecievers.map((reciever) => renderReciever(reciever))}
 
-      <div>
-        <Receiver {...sensorConfigData.Sensors[2]} />
-      </div>
     </>
   )
 }
