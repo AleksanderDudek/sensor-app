@@ -1,6 +1,6 @@
 export type ProgressBarSectionData = {
-  background: string;
-  width: number;
+  background: string
+  width: number
 }
 
 export type ProgressBarProps = {

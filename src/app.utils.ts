@@ -4,42 +4,50 @@
 // }
 
 enum QualityType {
-    Alarm = 'Alarm',
-    Normal = 'Normal',
-    Warning = 'Warning',
+  Alarm = 'Alarm',
+  Normal = 'Normal',
+  Warning = 'Warning',
 }
 
 export type HumanReadableSensorData = {
-    id: number,
-    sensorTypeName: string,
-    value: number,
-    signalQualityType: QualityType
+  id: number
+  sensorTypeName: string
+  value: number
+  signalQualityType: QualityType
 }
 
-export const formatSimulatorToHumanReadable = (simulatorTelegram: string = '$FIX, 3, Speed, 192, Normal*'): HumanReadableSensorData => {
-    if(simulatorTelegram[0] != '$' || simulatorTelegram[-1] != '*') throw 'Format of the telegram is incorrect'
+export const formatSimulatorToHumanReadable = (
+  simulatorTelegram: string = '$FIX, 3, Speed, 192, Normal*',
+): HumanReadableSensorData => {
+  if (simulatorTelegram[0] != '$' || simulatorTelegram[-1] != '*')
+    throw 'Format of the telegram is incorrect'
 
-    const splitStringArray = (simulatorTelegram.slice(0)).replace(/\s/g, '').replace(/[\*\$]/g, '').split(',');
+  const splitStringArray = simulatorTelegram
+    .slice(0)
+    .replace(/\s/g, '')
+    .replace(/[\*\$]/g, '')
+    .split(',')
 
-    const humanReadableData: HumanReadableSensorData = {
-        id: Number(splitStringArray[1]),
-        sensorTypeName: splitStringArray[2],
-        value: Number(splitStringArray[3]),
-        signalQualityType: QualityType[splitStringArray[4] as keyof typeof QualityType]
-    }
+  const humanReadableData: HumanReadableSensorData = {
+    id: Number(splitStringArray[1]),
+    sensorTypeName: splitStringArray[2],
+    value: Number(splitStringArray[3]),
+    signalQualityType:
+      QualityType[splitStringArray[4] as keyof typeof QualityType],
+  }
 
-    return humanReadableData;
+  return humanReadableData
 }
 
 // export class Simulator {
 //     private encoderType: string = '';
 //     // in HZ
-//     private frequency: number = 0; 
+//     private frequency: number = 0;
 //     private id: number = 0;
 //     private maxValue: number = 0;
 //     private minValue: number = 0;
 //     private sensorTypeName: string = '';
-   
+
 //     private intervalID: number | undefined = undefined;
 //     public outputSignal: string
 
@@ -73,7 +81,6 @@ export const formatSimulatorToHumanReadable = (simulatorTelegram: string = '$FIX
 //                 break
 //         }
 
-
 //     }
 
 //     //$FIX, 3, Speed, 192, Normal*
@@ -86,7 +93,7 @@ export const formatSimulatorToHumanReadable = (simulatorTelegram: string = '$FIX
 //     // generateRandomValue
 //     public generateRandomValue = () : number => {
 //     //    this.generateRandomValue() wodotrysk
-//     // upewnic sie co do przedzialow wartosci 
+//     // upewnic sie co do przedzialow wartosci
 //         // console.log(Math.random(), Math.random() * this.maxValue, Math.random() * (this.maxValue) + this.minValue )
 
 //        const randomVal = Math.floor(Math.random() * (this.maxValue) + this.minValue );
@@ -97,7 +104,7 @@ export const formatSimulatorToHumanReadable = (simulatorTelegram: string = '$FIX
 //         return this.outputSignal
 //     }
 
-//     startSignalGeneration = (frequency?: number)  => { 
+//     startSignalGeneration = (frequency?: number)  => {
 //         const signalFrequency = frequency ?? this.frequency;
 //         const id = setInterval(() => {
 //             //console.log('test', this.outputSignal)
@@ -126,8 +133,6 @@ export const formatSimulatorToHumanReadable = (simulatorTelegram: string = '$FIX
 //     }
 // }
 
-
-
 // // ./src/app --> folder
 // // ./src/App --> komponent
 // // SelectInput --> select-input.utils.ts --> select-input.utils
@@ -141,17 +146,17 @@ export const formatSimulatorToHumanReadable = (simulatorTelegram: string = '$FIX
 // type X = ObserverFn<string, number>
 
 // export class Observer<TData = any, TResult = any> {
-//     private subscribers: ObserverFn<TData, TResult>[]; 
+//     private subscribers: ObserverFn<TData, TResult>[];
 
 //     constructor(baseSubscribers?: ObserverFn<TData, TResult>[]) {
 //         this.subscribers = [...(baseSubscribers ?? [])]
 //     }
 
-//     subscribe = (newSubscriber: ObserverFn<TData, TResult>) => { 
+//     subscribe = (newSubscriber: ObserverFn<TData, TResult>) => {
 //         this.subscribers.push(newSubscriber)
 //     }
 
-//     unsubscribe = (subscriber: ObserverFn<TData, TResult>) => { 
+//     unsubscribe = (subscriber: ObserverFn<TData, TResult>) => {
 //         this.subscribers = this.subscribers.filter((subscriberItem) => subscriberItem !== subscriber)
 //     }
 

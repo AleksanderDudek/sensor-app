@@ -1,42 +1,44 @@
 import { useEffect, useState } from 'react'
-import data from './assets/sensorConfig.json'
+
 import './App.css'
+import { formatSimulatorToHumanReadable } from './app.utils'
+import data from './assets/sensorConfig.json'
+import { Receiver } from './components'
 import { SensorConfigData, SensorConfigDto } from './dto'
 import { SimulatorOutput, useSimulator } from './utils/hooks'
-import {Receiver} from './components'
-import { formatSimulatorToHumanReadable } from './app.utils'
 
-
-function App() {
-  const [sensorConfigData, setSensorConfigData] = useState<SensorConfigDto>(data)
+const App = () => {
+  const [sensorConfigData, setSensorConfigData] =
+    useState<SensorConfigDto>(data)
 
   // read from file if there are existing recievers
 
   // 1 simulator
+
   const simulator1 = useSimulator(sensorConfigData.Sensors[0])
   const simulator2 = useSimulator(sensorConfigData.Sensors[1])
   const simulator3 = useSimulator(sensorConfigData.Sensors[2])
 
   const startStop = (x: SimulatorOutput) => {
-    x.getIntervalID() ? x.stop() : x.start();
-  };
+    x.getIntervalID() ? x.stop() : x.start()
+  }
 
   // start simulator
   useEffect(() => {
-    simulator1.start();
-    simulator2.start();
-    simulator3.start();
+    simulator1.start()
+    simulator2.start()
+    simulator3.start()
 
     return () => {
-      simulator1.stop();
-      simulator2.stop();
-      simulator3.stop();
+      simulator1.stop()
+      simulator2.stop()
+      simulator3.stop()
     }
   }, [])
 
   formatSimulatorToHumanReadable()
 
-  const x = ({ data: []}) => (<div>Dane...</div>) 
+  const x = ({ data: [] }) => <div>Dane...</div>
 
   return (
     <>
@@ -49,16 +51,17 @@ function App() {
 
       <div>
         <Receiver {...sensorConfigData.Sensors[0]} />
-
       </div>
 
       <div>
         {simulator2.output}
-        <button onClick={() => startStop(simulator2)}> Stop streaming simulator 2 </button>
+        <button onClick={() => startStop(simulator2)}>
+          {' '}
+          Stop streaming simulator 2{' '}
+        </button>
       </div>
       <div>
         <Receiver {...sensorConfigData.Sensors[1]} />
-
       </div>
       <div>
         {simulator3.output}
@@ -67,9 +70,7 @@ function App() {
 
       <div>
         <Receiver {...sensorConfigData.Sensors[2]} />
-
       </div>
-
     </>
   )
 }
