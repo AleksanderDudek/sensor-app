@@ -1,25 +1,75 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+import { useEffect, useState } from 'react'
 import data from './assets/sensorConfig.json'
-import viteLogo from '/vite.svg'
 import './App.css'
+import { SensorConfigData, SensorConfigDto } from './dto'
+import { SimulatorOutput, useSimulator } from './utils/hooks'
+import {Receiver} from './components'
+import { formatSimulatorToHumanReadable } from './app.utils'
 
 
 function App() {
-  const [count, setCount] = useState(0)
   const [sensorConfigData, setSensorConfigData] = useState<SensorConfigDto>(data)
 
-  const createSim = (sensor: SensorConfigData) => {
+  // read from file if there are existing recievers
 
-  }
+  // 1 simulator
+  const simulator1 = useSimulator(sensorConfigData.Sensors[0])
+  const simulator2 = useSimulator(sensorConfigData.Sensors[1])
+  const simulator3 = useSimulator(sensorConfigData.Sensors[2])
 
-  const X = () => {
-    sensorConfigData.Sensors.map((sensor: SensorConfigData) => createSim(sensor))
-  }
+  const startStop = (x: SimulatorOutput) => {
+    x.getIntervalID() ? x.stop() : x.start();
+  };
+
+  // start simulator
+  useEffect(() => {
+    simulator1.start();
+    simulator2.start();
+    simulator3.start();
+
+    return () => {
+      simulator1.stop();
+      simulator2.stop();
+      simulator3.stop();
+    }
+  }, [])
+
+  formatSimulatorToHumanReadable()
+
+  const x = ({ data: []}) => (<div>Dane...</div>) 
 
   return (
     <>
       <h1> Sensor dashboard</h1>
+      <div>
+        {/* format val */}
+        {simulator1.output}
+        <button onClick={simulator1.stop}> Stop streaming simulator 1 </button>
+      </div>
+
+      <div>
+        <Receiver {...sensorConfigData.Sensors[0]} />
+
+      </div>
+
+      <div>
+        {simulator2.output}
+        <button onClick={() => startStop(simulator2)}> Stop streaming simulator 2 </button>
+      </div>
+      <div>
+        <Receiver {...sensorConfigData.Sensors[1]} />
+
+      </div>
+      <div>
+        {simulator3.output}
+        <button onClick={simulator3.stop}> Stop streaming simulator 3 </button>
+      </div>
+
+      <div>
+        <Receiver {...sensorConfigData.Sensors[2]} />
+
+      </div>
+
     </>
   )
 }

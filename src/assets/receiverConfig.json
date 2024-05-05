@@ -1,0 +1,24 @@
+{
+  "Recievers": [
+    {
+      "ID": 1,
+      "SimulatorID": 1,
+      "Status": "active"
+    },
+    {
+      "ID": 2,
+      "SimulatorID": 1,
+      "Status": "inactive"
+    },
+    {
+      "ID": 3,
+      "SimulatorID": 2,
+      "Status": "active"
+    },
+    {
+      "ID": 4,
+      "SimulatorID": 3,
+      "Status": "active"
+    }
+  ]
+}
