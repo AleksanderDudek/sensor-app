@@ -24,11 +24,11 @@ const Receiver = ({ sensorData, sensorConfig, recieverData, onRecieverStatusUpda
   const renderStatusMessage = () => {
     switch (extractedTelegram.signalQualityType) {
       case QualityType.Alarm:
-        return <p className='reciever-message reciever-message-alarm'> {extractedTelegram.signalQualityType} value!!!</p>
+        return <p className='reciever-message reciever-message-alarm'>{extractedTelegram.value} is {extractedTelegram.signalQualityType} value!!!</p>
       case QualityType.Normal:
-        return <p className='reciever-message reciever-message-normal'> {extractedTelegram.signalQualityType} value</p>
+        return <p className='reciever-message reciever-message-normal'>{extractedTelegram.value} is {extractedTelegram.signalQualityType} value</p>
       case QualityType.Warning:
-        return <p className='reciever-message reciever-message-warning'> {extractedTelegram.signalQualityType} value!</p>
+        return <p className='reciever-message reciever-message-warning'>{extractedTelegram.value} is {extractedTelegram.signalQualityType} value!</p>
       default:
         return <p> {extractedTelegram.signalQualityType} value!</p>
     }

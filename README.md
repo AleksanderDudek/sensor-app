@@ -1,3 +1,7 @@
+# Application overview
+Current working app deploy should be visible here:
+https://sensor-app-tqk4.vercel.app/
+
 # Minimal setup
 To run the app:
 
@@ -21,6 +25,7 @@ Currently you can switch status of reciever from UI. It isn't persisted in file.
 
 As for how I would develop it further:
 - fix build errors
+- add environment file to manage build versions
 - I would add error and edge cases handling 
 - more testing
 - dockerize the application to make it available in different server environment
