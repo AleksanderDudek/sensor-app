@@ -1,45 +1,19 @@
 import { describe, expect, it } from 'vitest'
+import { HumanReadableSensorData, QualityType, formatSimulatorToHumanReadable } from './app.utils';
 
-// describe('getRange', () => {
-//   it('handles undefined range', () => {
-//     const undefRange = undefined
+describe('formatSimulatorToHumanReadable', () => {
+  const correctMockInput: string = '$FIX, 3, Speed, 192, Normal*';
+  const correctMockResult: HumanReadableSensorData = {
+    id: 3,
+    signalQualityType: QualityType.Normal,
+    sensorTypeName: 'Speed',
+    value: 192
+  }
 
-//     const result = getRange(undefRange)
-//     expect(result).toEqual('-')
-//   })
+  it('should provide correct data', () => {
 
-//   it('handles empty range', () => {
-//     const emptyRange: RangeValue = {}
+    const result = formatSimulatorToHumanReadable(correctMockInput)
+    expect(result).toEqual(correctMockResult)
+  })
 
-//     const result = getRange(emptyRange)
-//     expect(result).toEqual('-')
-//   })
-
-//   it('returns correct result on no min value in range', () => {
-//     const onlyMaxRange: RangeValue = { max: 3.87 }
-
-//     const result = getRange(onlyMaxRange)
-//     expect(result).toEqual(`<${onlyMaxRange.max}`)
-//   })
-
-//   it('returns correct result on no max value in range', () => {
-//     const onlyMinRange: RangeValue = { min: 3.87 }
-
-//     const result = getRange(onlyMinRange)
-//     expect(result).toEqual(`>${onlyMinRange.min}`)
-//   })
-
-//   it('returns correct result with all values in range', () => {
-//     const fullRange: RangeValue = { min: 3.87, max: 10.32 }
-
-//     const result = getRange(fullRange)
-//     expect(result).toEqual(`${fullRange.min} - ${fullRange.max}`)
-//   })
-
-//   it('returns correct result when min is equal to max', () => {
-//     const minMaxEqualRange: RangeValue = { min: 3.87, max: 3.87 }
-
-//     const result = getRange(minMaxEqualRange)
-//     expect(result).toEqual(`${minMaxEqualRange.min}`)
-//   })
-// })
+})

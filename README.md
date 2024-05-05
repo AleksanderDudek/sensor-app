@@ -19,6 +19,14 @@ Other than that you should be able to have it working.
 
 Currently you can switch status of reciever from UI. It isn't persisted in file.
 
+As for how I would develop it further:
+- I would add error and edge cases handling
+- more testing
+- husky with running prerequisites for:
+  - npm run test
+  - npm run lint 
+  - might also involve build check with tools like lighthouse or some type of static code check
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
