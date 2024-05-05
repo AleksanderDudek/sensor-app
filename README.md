@@ -20,8 +20,10 @@ Other than that you should be able to have it working.
 Currently you can switch status of reciever from UI. It isn't persisted in file.
 
 As for how I would develop it further:
-- I would add error and edge cases handling
+- fix build errors
+- I would add error and edge cases handling 
 - more testing
+- dockerize the application to make it available in different server environment
 - husky with running prerequisites for:
   - npm run test
   - npm run lint 
