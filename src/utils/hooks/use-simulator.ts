@@ -18,7 +18,7 @@ export type SimulatorOutput = {
 export const useSimulator = (
   data: Partial<SensorConfigData>,
 ): SimulatorOutput => {
-  let encoderType: string = ''
+  // let encoderType: string = ''
   let frequencyHz: number = 0
   let id: number = 0
   let maxValue: number = 0
@@ -60,7 +60,7 @@ export const useSimulator = (
   }
 
   const mapSensorConfigDataToSimulator = () => {
-    encoderType = data.EncoderType ?? ''
+    // encoderType = data.EncoderType ?? ''
     frequencyHz = data.Frequency ?? 0
     id = data.ID ?? 0
     maxValue = data.MaxValue ?? 0

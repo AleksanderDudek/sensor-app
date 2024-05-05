@@ -25,6 +25,7 @@ export const formatSimulatorToHumanReadable = (
   const splitStringArray = simulatorTelegram
     .slice(0)
     .replace(/\s/g, '')
+    /* tslint:disable-next-line */
     .replace(/[\*\$]/g, '')
     .split(',')
 

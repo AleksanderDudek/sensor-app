@@ -17,7 +17,6 @@ const App = () => {
     useState<RecieverConfigDTO>(recieverData)
 
   // read from file if there are existing recievers
-
   const generatedSimulators: SimulatorOutput[] = sensorConfigData.Sensors.map((sensorConfigDataItem: SensorConfigData) => useSimulator(sensorConfigDataItem))
   const generatedRecievers: RecieverConfigData[] = recieverConfigData.Recievers;
 
@@ -40,7 +39,7 @@ const App = () => {
 
   // we assume for the sake of this task that SimulatorID is also index inside sensorConfig.json array
   const onRecieverStatusUpdate = (recId: number) => {
-    let tempObject: RecieverConfigDTO = { ...recieverConfigData }
+    const tempObject: RecieverConfigDTO = { ...recieverConfigData }
     //toggle activity status
     tempObject.Recievers[recId] = { ...tempObject.Recievers[recId], Status: tempObject.Recievers[recId].Status == RecieverStatus.Active ? RecieverStatus.Inactive : RecieverStatus.Active }
     setRecieverConfigData(tempObject);
