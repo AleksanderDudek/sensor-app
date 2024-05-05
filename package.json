@@ -13,7 +13,7 @@
     "prettier": "prettier --check .",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
     "test": "vitest --watch=false",
-    "prepare": "husky install",
+    "prepare": "husky install || true",
     "pre-commit": "npm run test"
   },
   "dependencies": {
